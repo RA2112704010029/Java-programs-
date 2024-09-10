@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="calculatorApp">
+<head>
+  <meta charset="UTF-8">
+  <title>AngularJS Arithmetic Calculator</title>
+</head>
+<body>
+  <arithmetic-calculator></arithmetic-calculator>
+
+  <!-- Include AngularJS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  
+  <script>
+    // AngularJS application module
+    var app = angular.module('calculatorApp', []);
+
+    // Service to perform arithmetic operations
+    app.service('ArithmeticService', function() {
+      this.add = function(a, b) {
+        return a + b;
+      };
+
+      this.subtract = function(a, b) {
+        return a - b;
+      };
+
+      this.multiply = function(a, b) {
+        return a * b;
+      };
+
+      this.divide = function(a, b) {
+        if (b === 0) {
+          return 'Cannot divide by zero';
+        }
+        return a / b;
+      };
+
+      this.square = function(a) {
+        return a * a;
+      };
+    });
+
+    // Component to read numbers and display the results
+    app.component('arithmeticCalculator', {
+      template: `
+        <div>
+          <h3>Arithmetic Calculator</h3>
+          <input type="number" ng-model="$ctrl.number1" placeholder="Enter first number">
+          <input type="number" ng-model="$ctrl.number2" placeholder="Enter second number (optional)">
+          <br><br>
+          <button ng-click="$ctrl.performSquare()">Square First Number</button>
+          <button ng-click="$ctrl.performAddition()">Add</button>
+          <button ng-click="$ctrl.performSubtraction()">Subtract</button>
+          <button ng-click="$ctrl.performMultiplication()">Multiply</button>
+          <button ng-click="$ctrl.performDivision()">Divide</button>
+          <br><br>
+          <div ng-if="$ctrl.result !== undefined">
+            <strong>Result:</strong> {{$ctrl.result}}
+          </div>
+        </div>
+      `,
+      controller: function(ArithmeticService) {
+        var ctrl = this;
+
+        ctrl.number1 = null;
+        ctrl.number2 = null;
+        ctrl.result = undefined;
+
+        ctrl.performSquare = function() {
+          if (ctrl.number1 !== null) {
+            ctrl.result = ArithmeticService.square(ctrl.number1);
+          }
+        };
+
+        ctrl.performAddition = function() {
+          if (ctrl.number1 !== null && ctrl.number2 !== null) {
+            ctrl.result = ArithmeticService.add(ctrl.number1, ctrl.number2);
+          }
+        };
+
+        ctrl.performSubtraction = function() {
+          if (ctrl.number1 !== null && ctrl.number2 !== null) {
+            ctrl.result = ArithmeticService.subtract(ctrl.number1, ctrl.number2);
+          }
+        };
+
+        ctrl.performMultiplication = function() {
+          if (ctrl.number1 !== null && ctrl.number2 !== null) {
+            ctrl.result = ArithmeticService.multiply(ctrl.number1, ctrl.number2);
+          }
+        };
+
+        ctrl.performDivision = function() {
+          if (ctrl.number1 !== null && ctrl.number2 !== null) {
+            ctrl.result = ArithmeticService.divide(ctrl.number1, ctrl.number2);
+          }
+        };
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="studentApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration Form</title>
+    <!-- Add AngularJS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <!-- Custom AngularJS Controller -->
+    <script>
+        // Initialize AngularJS App
+        var app = angular.module('studentApp', []);
+
+        // Controller to handle form submission and validation
+        app.controller('studentController', function($scope) {
+            $scope.student = {};
+            $scope.hobbies = {
+                sports: false,
+                reading: false,
+                coding: false
+            };
+            
+            // Function to submit form
+            $scope.submitForm = function(isValid) {
+                if (isValid) {
+                    alert("Form Submitted Successfully!");
+
+                    // Reset form fields after submission
+                    $scope.student = {};  // Reset the student object
+                    $scope.hobbies = {    // Reset hobbies checkboxes
+                        sports: false,
+                        reading: false,
+                        coding: false
+                    };
+                    $scope.studentForm.$setPristine();  // Reset form validation state
+                    $scope.studentForm.$setUntouched(); // Reset touched state
+                } else {
+                    alert("Please fill out the form correctly.");
+                }
+            };
+        });
+    </script>
+    <style>
+        /* Basic form styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            width: 400px;
+            margin: 0 auto;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+            display: block;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input[type="radio"], input[type="checkbox"] {
+            width: auto;
+            margin-right: 10px;
+        }
+        .error {
+            color: red;
+            font-size: 12px;
+        }
+        button {
+            width: 100%;
+            background-color: #28a745;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body ng-controller="studentController">
+
+    <h2>Student Registration Form</h2>
+
+    <!-- Form begins here -->
+    <form name="studentForm" ng-submit="submitForm(studentForm.$valid)" novalidate>
+
+        <!-- Name -->
+        <label>Name:</label>
+        <input type="text" name="name" ng-model="student.name" ng-required="true" />
+        <span class="error" ng-show="studentForm.name.$touched && studentForm.name.$invalid">
+            Name is required.
+        </span>
+        <br><br>
+
+        <!-- Registration Number -->
+        <label>Reg No:</label>
+        <input type="text" name="regno" ng-model="student.regno" ng-required="true" ng-pattern="/^RA[0-9]{13}$/" />
+        <span class="error" ng-show="studentForm.regno.$touched && studentForm.regno.$invalid">
+            Reg No is required (Format: RA followed by 13 digits).
+        </span>
+        <br><br>
+
+
+        <!-- Email ID -->
+        <label>Email ID:</label>
+        <input type="email" name="email" ng-model="student.email" ng-required="true" />
+        <span class="error" ng-show="studentForm.email.$touched && studentForm.email.$invalid">
+            Valid Email ID is required.
+        </span>
+        <br><br>
+
+        <!-- Gender -->
+        <label>Gender:</label>
+        <input type="radio" name="gender" ng-model="student.gender" value="Male" ng-required="true" /> Male
+        <input type="radio" name="gender" ng-model="student.gender" value="Female" ng-required="true" /> Female
+        <input type="radio" name="gender" ng-model="student.gender" value="Female" ng-required="true" /> Other
+        <span class="error" ng-show="studentForm.gender.$touched && studentForm.gender.$invalid">
+            Gender is required.
+        </span>
+        <br><br>
+
+        <!-- Age -->
+        <label>Age:</label>
+        <input type="number" name="age" ng-model="student.age" ng-required="true" min="18" max="60" />
+        <span class="error" ng-show="studentForm.age.$touched && studentForm.age.$invalid">
+            Age is required (18-60 years).
+        </span>
+        <br><br>
+
+        <!-- Department -->
+        <label>Department:</label>
+        <select name="department" ng-model="student.department" ng-required="true">
+            <option value="">-- Select Department --</option>
+            <option value="CSE">CSE</option>
+            <option value="ECE">ECE</option>
+            <option value="EEE">EEE</option>
+            <option value="MECH">MECH</option>
+            <option value="BIOTECH">BIOTECH</option>
+            <option value="AUTO">AUTO</option>
+            <option value="CHEM">CHEM</option>
+            <option value="ROBO">ROBO</option>
+        </select>
+        <span class="error" ng-show="studentForm.department.$touched && studentForm.department.$invalid">
+            Department is required.
+        </span>
+        <br><br>
+
+        <!-- Hobbies -->
+        <label>Hobbies:</label><br>
+        <input type="checkbox" ng-model="hobbies.sports" /> Sports
+        <input type="checkbox" ng-model="hobbies.reading" /> Reading
+        <input type="checkbox" ng-model="hobbies.coding" /> Coding
+        <input type="checkbox" ng-model="hobbies.painting" /> Painting
+        <input type="checkbox" ng-model="hobbies.gym" /> Gym
+        <input type="checkbox" ng-model="hobbies.studying" /> Studying
+        <br><br>
+
+        <!-- Submit Button -->
+        <button type="submit">Submit</button>
+
+    </form>
+
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="calculatorApp">
+<head>
+  <meta charset="UTF-8">
+  <title>AngularJS Number Calculator</title>
+</head>
+<body>
+  <number-calculator></number-calculator>
+
+  <!-- Include AngularJS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  
+  <script>
+    // AngularJS application module
+    var app = angular.module('calculatorApp', []);
+
+    // Number calculator component
+    app.component('numberCalculator', {
+      template: `
+        <div>
+          <h3>Number Calculator</h3>
+          <input type="number" ng-model="$ctrl.number" placeholder="Enter a number">
+          <br><br>
+          <button ng-click="$ctrl.calculateSquare()">Square</button>
+          <button ng-click="$ctrl.calculateCube()">Cube</button>
+          <br><br>
+          <div ng-if="$ctrl.squareResult !== undefined">
+            <strong>Square:</strong> {{$ctrl.squareResult}}
+          </div>
+          <div ng-if="$ctrl.cubeResult !== undefined">
+            <strong>Cube:</strong> {{$ctrl.cubeResult}}
+          </div>
+        </div>
+      `,
+      controller: function() {
+        var ctrl = this;
+
+        ctrl.number = null;
+        ctrl.squareResult = undefined;
+        ctrl.cubeResult = undefined;
+
+        ctrl.calculateSquare = function() {
+          if (ctrl.number !== null) {
+            ctrl.squareResult = Math.pow(ctrl.number, 2);
+            ctrl.cubeResult = undefined; // Reset cube result
+          }
+        };
+
+        ctrl.calculateCube = function() {
+          if (ctrl.number !== null) {
+            ctrl.cubeResult = Math.pow(ctrl.number, 3);
+            ctrl.squareResult = undefined; // Reset square result
+          }
+        };
+      }
+    });
+  </script>
+</body>
+</html>
